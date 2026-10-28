@@ -1,67 +1,170 @@
-# Python + Playwright UI Test Framework
+# Python + Playwright UI Test Automation Framework
 
-A small, beginner-friendly UI automation project using Python, synchronous Playwright, pytest, page objects, JSON test data, and self-contained HTML reports.
+A beginner-friendly UI automation framework built with **Python, Playwright, and Pytest**, following the Page Object Model (POM). It demonstrates reusable fixtures, external JSON test data, and HTML test reporting.
 
-## Demo websites
+## Features
 
-- Login tests use [Sauce Demo](https://www.saucedemo.com/) and its published sample accounts. The standard and locked-out account behavior is part of the site's demo data, but public demo sites can change or be unavailable. Treat failures there as a possible site change and check the page manually.
-These are public demo pages. The tests are examples, not checks for a service that this project controls. The site, sample accounts, selectors, or content may change, so check the live page when a test starts failing.
+- Python with Playwright's synchronous API
+- Pytest-based test execution and reusable fixtures
+- Page Object Model for maintainable test scripts
+- External test data stored in JSON
+- Centralized configuration for URLs and timeouts
+- HTML test reports using `pytest-html`
+- GitHub-ready project structure
 
-## Architecture
+## Demo Website
 
-`tests/` holds readable test scenarios. `pages/` holds page objects: `BasePage` provides shared navigation, and each specific page class owns its locators and actions. `fixtures/browser_fixtures.py` provides a small `app_page` alias around the `page` fixture supplied by `pytest-playwright`, so browser lifecycle setup and teardown are already handled. `conftest.py` loads JSON test data. `test_data/users.json` keeps sample account data outside the test code. `utils/config.py` centralizes URLs and timeout settings. `reports/` receives the generated HTML report.
+Login tests use [Sauce Demo](https://www.saucedemo.com/) and its published sample accounts.
 
-The page object pattern keeps tests focused on what a user does, while selectors and page-specific behavior stay together in their page class. Pytest fixtures provide each test a fresh page and load the JSON data when requested.
+The tests demonstrate successful login, locked-out user handling, and product-page verification. Sauce Demo is a public demonstration website, so its content, selectors, sample accounts, or availability may change. Failures should be investigated against the live website before being treated as framework defects.
 
-## Prerequisites and installation
+## Project Architecture
 
-Install Python 3.9 or newer and use a terminal opened at this project folder. On Windows PowerShell:
+```text
+playwright-python-framework/
+├── tests/
+│   ├── test_login.py
+│   └── test_home_page.py
+├── pages/
+│   ├── base_page.py
+│   ├── login_page.py
+│   └── home_page.py
+├── fixtures/
+│   └── browser_fixtures.py
+├── test_data/
+│   └── users.json
+├── utils/
+│   └── config.py
+├── reports/
+├── .gitignore
+├── conftest.py
+├── pytest.ini
+├── requirements.txt
+└── README.md
+```
+
+### Folder responsibilities
+
+| Component | Purpose |
+|---|---|
+| `tests/` | Contains readable test scenarios and assertions. |
+| `pages/` | Contains page objects, locators, and page-specific actions. |
+| `pages/base_page.py` | Provides shared page functionality. |
+| `fixtures/` and `conftest.py` | Support reusable test setup and fixtures. |
+| `test_data/` | Stores sample user data in JSON format. |
+| `utils/config.py` | Centralizes reusable configuration values. |
+| `reports/` | Stores generated HTML reports. |
+| `pytest.ini` | Configures Pytest and report options. |
+| `requirements.txt` | Lists Python dependencies. |
+
+The Page Object Model keeps test scenarios separate from page-specific locators and actions. This makes the framework easier to maintain and extend.
+
+## Prerequisites
+
+- Python 3.9 or newer
+- Git
+- Visual Studio Code or another Python editor
+
+## Installation
+
+Open a terminal in the project directory.
+
+### 1. Create a virtual environment
 
 ```powershell
 py -m venv .venv
+```
+
+### 2. Activate the environment
+
+```powershell
 .\.venv\Scripts\Activate.ps1
+```
+
+If PowerShell blocks activation, use `.venv\Scripts\python.exe` to run Python commands directly.
+
+### 3. Install dependencies
+
+```powershell
 python -m pip install --upgrade pip
 pip install -r requirements.txt
+```
+
+### 4. Install the Playwright browser
+
+```powershell
 python -m playwright install chromium
 ```
 
-If PowerShell blocks activation, you can run commands using `.venv\Scripts\python.exe` directly instead of activating the environment. Chromium is the default browser for pytest-playwright; install other browsers with `python -m playwright install firefox` or `webkit` if needed.
+## Running Tests
 
-## Run tests
-
-Run all tests:
+Run the entire test suite:
 
 ```powershell
-pytest
+python -m pytest
 ```
 
-Run one test file:
+Run the login tests:
 
 ```powershell
-pytest tests/test_login.py
+python -m pytest tests/test_login.py
 ```
 
-Run one named test:
+Run a specific test:
 
 ```powershell
-pytest tests/test_login.py::test_standard_user_can_log_in
+python -m pytest tests/test_login.py::test_standard_user_can_log_in
 ```
 
-Pytest uses pytest-playwright's `page` fixture to open and close a browser page for each test. To see the browser while tests run, add `--headed`; to select a browser, add `--browser firefox` (after installing that browser).
-
-## HTML reports
-
-`pytest.ini` configures pytest-html to write `reports/report.html` as a self-contained report. Run `pytest`, then open that file in a browser. The generated report is ignored by Git so it does not clutter portfolio commits. To choose another report path, override the options, for example:
+Run tests with the browser visible:
 
 ```powershell
-pytest --html=reports/login-report.html --self-contained-html
+python -m pytest --headed
 ```
 
-## Add a page object and test
+## HTML Test Reports
 
-1. Create a class in `pages/`, accept a Playwright `Page`, and keep that page's locators and user actions in the class. Inherit from `BasePage` if the shared `open()` method is useful.
-2. Add URLs or other reusable settings to `utils/config.py`. Put reusable data in `test_data/` when appropriate.
-3. Create a `tests/test_*.py` file. Request `app_page` (or pytest-playwright's `page`) and any data fixtures in the test function, call page-object methods, and use Playwright's `expect(...)` assertions.
-4. Run the new test with `pytest tests/test_your_feature.py` and inspect the report.
+The framework uses `pytest-html` to generate an HTML report.
 
-For example, a new test can construct `ProductsPage(app_page)`, call `open()` or a page-specific action, then assert a user-visible result. Prefer role, label, and test-id locators when a site provides them; confirm selectors against the current demo page when it changes.
+Run the test suite:
+
+```powershell
+python -m pytest
+```
+
+Open the generated report:
+
+```powershell
+Invoke-Item .\reports\report.html
+```
+
+The report provides a convenient way to review test execution results. Generated reports are excluded from Git commits to keep the repository clean.
+
+To generate a separate report for a specific run:
+
+```powershell
+python -m pytest tests/test_login.py --html=reports/login-report.html --self-contained-html
+```
+
+## Adding a New Test
+
+1. Create a page class in `pages/` and define its locators and user actions.
+2. Reuse `BasePage` functionality where appropriate.
+3. Add reusable configuration to `utils/config.py` and test data to `test_data/` when needed.
+4. Create a test file named `test_*.py` in `tests/`.
+5. Use the available fixtures and Playwright assertions.
+6. Run the test and inspect the HTML report.
+
+## Project Status
+
+The initial framework is implemented, and the current test suite has passed all three tests in the local development environment.
+
+This is a portfolio and learning project intended to demonstrate UI automation framework design, test organization, and reporting. It is not affiliated with or maintained by Sauce Labs.
+
+## Future Improvements
+
+- Add more positive and negative test scenarios
+- Expand reusable page objects and assertions
+- Integrate API testing
+- Add continuous integration with GitHub Actions
+
