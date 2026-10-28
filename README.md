@@ -168,3 +168,5 @@ This is a portfolio and learning project intended to demonstrate UI automation f
 - Integrate API testing
 - Add continuous integration with GitHub Actions
 
+
+[![Playwright Tests](https://github.com/gshetty123/playwright-python-framework/actions/workflows/playwright-tests.yml/badge.svg?branch=master)](https://github.com/gshetty123/playwright-python-framework/actions/workflows/playwright-tests.yml)
