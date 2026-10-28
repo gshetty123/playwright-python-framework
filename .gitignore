@@ -1,0 +1,23 @@
+# Python environments and bytecode
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Pytest and coverage output
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Generated reports, traces, and browser artifacts
+reports/*
+!reports/.gitkeep
+test-results/
+playwright-report/
+*.trace.zip
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
