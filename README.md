@@ -1,27 +1,32 @@
 # Python + Playwright UI Test Automation Framework
 
-A beginner-friendly UI automation framework built with **Python, Playwright, and Pytest**, following the Page Object Model (POM). It demonstrates reusable fixtures, external JSON test data, and HTML test reporting.
+[![Playwright Tests](https://github.com/gshetty123/playwright-python-framework/actions/workflows/playwright-tests.yml/badge.svg?branch=master)](https://github.com/gshetty123/playwright-python-framework/actions/workflows/playwright-tests.yml)
 
-## Features
+A Python-based UI test automation framework built using **Playwright and Pytest**, following the **Page Object Model (POM)** design pattern.
 
-- Python with Playwright's synchronous API
-- Pytest-based test execution and reusable fixtures
-- Page Object Model for maintainable test scripts
-- External test data stored in JSON
-- Centralized configuration for URLs and timeouts
-- HTML test reports using `pytest-html`
-- GitHub-ready project structure
+This project demonstrates maintainable automation practices, reusable fixtures, data-driven testing using external JSON files, automated HTML reporting, failure screenshots, and continuous integration with GitHub Actions.
 
-## Demo Website
+It demonstrates practical capabilities in functional testing, regression testing, and web UI automation.
 
-Login tests use [Sauce Demo](https://www.saucedemo.com/) and its published sample accounts.
+## Key Features
 
-The tests demonstrate successful login, locked-out user handling, and product-page verification. Sauce Demo is a public demonstration website, so its content, selectors, sample accounts, or availability may change. Failures should be investigated against the live website before being treated as framework defects.
+- **Browser Automation:** Web UI automation using Playwright with Chromium.
+- **Test Framework:** Pytest-based execution with reusable fixtures.
+- **Page Object Model:** Organized page classes for maintainable automation.
+- **Data-Driven Testing:** External JSON files for managing test credentials and test data.
+- **Reusable Components:** Shared page functionality and centralized configuration.
+- **Automated Reporting:** Self-contained HTML test reports using `pytest-html`.
+- **Failure Screenshots:** Automatically captures screenshots when tests fail.
+- **Continuous Integration:** GitHub Actions workflow for automated test execution.
+- **Version Control:** Git-based source control and GitHub repository management.
 
 ## Project Architecture
 
 ```text
 playwright-python-framework/
+├── .github/
+│   └── workflows/
+│       └── playwright-tests.yml
 ├── tests/
 │   ├── test_login.py
 │   └── test_home_page.py
@@ -36,6 +41,7 @@ playwright-python-framework/
 ├── utils/
 │   └── config.py
 ├── reports/
+│   └── screenshots/
 ├── .gitignore
 ├── conftest.py
 ├── pytest.ini
@@ -43,130 +49,193 @@ playwright-python-framework/
 └── README.md
 ```
 
-### Folder responsibilities
+### Folder Responsibilities
 
-| Component | Purpose |
+| Component | Responsibility |
 |---|---|
-| `tests/` | Contains readable test scenarios and assertions. |
-| `pages/` | Contains page objects, locators, and page-specific actions. |
-| `pages/base_page.py` | Provides shared page functionality. |
-| `fixtures/` and `conftest.py` | Support reusable test setup and fixtures. |
-| `test_data/` | Stores sample user data in JSON format. |
-| `utils/config.py` | Centralizes reusable configuration values. |
-| `reports/` | Stores generated HTML reports. |
-| `pytest.ini` | Configures Pytest and report options. |
-| `requirements.txt` | Lists Python dependencies. |
+| `tests/` | Contains test scenarios, execution logic, and assertions. |
+| `pages/` | Implements Page Object Model classes, locators, and page-specific actions. |
+| `pages/base_page.py` | Provides reusable methods shared across page classes. |
+| `fixtures/` | Provides browser and page fixtures for test execution. |
+| `conftest.py` | Manages shared Pytest fixtures and automatic failure screenshots. |
+| `test_data/` | Stores external JSON test data and sample user credentials. |
+| `utils/` | Contains reusable configuration and helper modules. |
+| `.github/workflows/` | Configures automated test execution through GitHub Actions. |
+| `reports/` | Stores generated HTML reports and failure screenshots locally. |
+| `pytest.ini` | Defines Pytest discovery and reporting configuration. |
+| `requirements.txt` | Lists the Python dependencies required by the framework. |
 
-The Page Object Model keeps test scenarios separate from page-specific locators and actions. This makes the framework easier to maintain and extend.
+## Installation and Execution
 
-## Prerequisites
+### Prerequisites
 
-- Python 3.9 or newer
+- Python 3.10 or later
 - Git
-- Visual Studio Code or another Python editor
+- pip
 
-## Installation
+### Clone the repository
 
-Open a terminal in the project directory.
+```bash
+git clone https://github.com/gshetty123/playwright-python-framework.git
 
-### 1. Create a virtual environment
-
-```powershell
-py -m venv .venv
+cd playwright-python-framework
 ```
 
-### 2. Activate the environment
+### Install dependencies
 
-```powershell
-.\.venv\Scripts\Activate.ps1
+```bash
+python -m pip install -r requirements.txt
 ```
 
-If PowerShell blocks activation, use `.venv\Scripts\python.exe` to run Python commands directly.
+### Install Playwright browser
 
-### 3. Install dependencies
-
-```powershell
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### 4. Install the Playwright browser
-
-```powershell
+```bash
 python -m playwright install chromium
 ```
 
-## Running Tests
+### Run the tests
 
-Run the entire test suite:
-
-```powershell
+```bash
 python -m pytest
 ```
 
-Run the login tests:
+### Run tests in headed mode
 
-```powershell
-python -m pytest tests/test_login.py
-```
-
-Run a specific test:
-
-```powershell
-python -m pytest tests/test_login.py::test_standard_user_can_log_in
-```
-
-Run tests with the browser visible:
-
-```powershell
+```bash
 python -m pytest --headed
 ```
 
-## HTML Test Reports
+## Adding a New Test
 
-The framework uses `pytest-html` to generate an HTML report.
+Follow these steps to add a new UI automation test:
 
-Run the test suite:
+1. Create or update the relevant Page Object class in the `pages/` directory.
+2. Define reusable locators and page-specific actions in the Page Object class.
+3. Add test data to `test_data/users.json` if required.
+4. Create a new test file in the `tests/` directory using the `test_` naming convention.
+5. Use the shared fixtures and Page Object methods in your test.
+6. Add assertions to validate the expected application behaviour.
+7. Run the test suite using `python -m pytest`.
+
+This approach keeps test scenarios readable, reusable, and maintainable.
+
+## Project Status
+
+The framework is implemented and published on GitHub.
+
+Current capabilities include:
+
+- Three UI automation test scenarios covering login and product-page functionality.
+- Reusable Page Object Model architecture.
+- External JSON-based test data management.
+- Automated HTML test reporting.
+- Automatic screenshots on test failures.
+- GitHub Actions integration for continuous test execution.
+
+All three existing tests have passed in the local development environment, and the GitHub Actions workflow has completed successfully.
+
+This project demonstrates practical skills in Python-based UI automation, functional testing, regression testing, test framework design, and continuous integration.
+
+## QA Automation Services
+
+I can help teams improve their web application testing through:
+
+- **UI Automation:** Automating repetitive web application workflows using Python and Playwright.
+- **Functional Testing:** Validating application features against business requirements.
+- **Regression Testing:** Automating existing test scenarios to identify unexpected changes.
+- **Test Framework Development:** Building reusable automation frameworks using Pytest and Page Object Model.
+- **Failure Analysis:** Capturing screenshots and investigating failed test scenarios.
+- **CI Integration:** Configuring automated test execution using GitHub Actions.
+
+For freelance QA automation projects, I can help with test automation, framework setup, and regression test coverage.
+
+## Future Improvements
+
+- Expand UI automation coverage with additional positive and negative test scenarios.
+- Introduce API testing using Playwright's API capabilities.
+- Add cross-browser execution for Chromium, Firefox, and WebKit.
+- Integrate advanced test reporting with Allure.
+- Improve test execution through parallel testing.
+- Explore Jenkins integration for CI/CD pipeline execution.
+
+## Demo Application and Test Coverage
+
+**Application:** [Sauce Demo](https://www.saucedemo.com/)
+
+The framework currently automates the following scenarios:
+
+| Test Scenario | Expected Result |
+|---|---|
+| Standard user login | User successfully logs in. |
+| Locked-out user login | Appropriate error message is displayed. |
+| Inventory page validation | Products are displayed after successful login. |
+
+These scenarios demonstrate functional UI testing, positive and negative test coverage, and validation of application behaviour.
+
+**Note:** Sauce Demo is a public demonstration application. Its availability and behaviour may change independently of this framework. This is an independent portfolio project and is not affiliated with Sauce Labs.
+
+## Test Reporting and Failure Screenshots
+
+The framework uses `pytest-html` to generate self-contained HTML test reports.
+
+### Generate the HTML report
+
+Run the complete test suite:
 
 ```powershell
 python -m pytest
 ```
 
-Open the generated report:
+The report is generated at:
+
+```text
+reports/report.html
+```
+
+Open the report in your default browser:
 
 ```powershell
 Invoke-Item .\reports\report.html
 ```
 
-The report provides a convenient way to review test execution results. Generated reports are excluded from Git commits to keep the repository clean.
+### Automatic Failure Screenshots
 
-To generate a separate report for a specific run:
+The framework captures screenshots automatically when a test fails during execution.
 
-```powershell
-python -m pytest tests/test_login.py --html=reports/login-report.html --self-contained-html
+Screenshots are saved in:
+
+```text
+reports/screenshots/
 ```
 
-## Adding a New Test
+Each screenshot uses the corresponding test name as its filename.
 
-1. Create a page class in `pages/` and define its locators and user actions.
-2. Reuse `BasePage` functionality where appropriate.
-3. Add reusable configuration to `utils/config.py` and test data to `test_data/` when needed.
-4. Create a test file named `test_*.py` in `tests/`.
-5. Use the available fixtures and Playwright assertions.
-6. Run the test and inspect the HTML report.
+This helps investigate UI failures and provides visual evidence for debugging.
 
-## Project Status
+**Note:** Generated reports and screenshots are excluded from Git commits through `.gitignore`.
 
-The initial framework is implemented, and the current test suite has passed all three tests in the local development environment.
+## Continuous Integration with GitHub Actions
 
-This is a portfolio and learning project intended to demonstrate UI automation framework design, test organization, and reporting. It is not affiliated with or maintained by Sauce Labs.
+The framework uses GitHub Actions to automate Playwright test execution.
 
-## Future Improvements
+The workflow is configured in:
 
-- Add more positive and negative test scenarios
-- Expand reusable page objects and assertions
-- Integrate API testing
-- Add continuous integration with GitHub Actions
+`.github/workflows/playwright-tests.yml`
 
+### Workflow triggers
 
-[![Playwright Tests](https://github.com/gshetty123/playwright-python-framework/actions/workflows/playwright-tests.yml/badge.svg?branch=master)](https://github.com/gshetty123/playwright-python-framework/actions/workflows/playwright-tests.yml)
+- Push to the `master` branch.
+- Pull requests targeting the `master` branch.
+- Manual execution through GitHub Actions.
+
+### Automated workflow steps
+
+1. Checks out the repository.
+2. Sets up Python 3.12.
+3. Installs project dependencies.
+4. Installs Playwright and Chromium.
+5. Executes the Pytest test suite.
+
+The workflow runs on GitHub-hosted Ubuntu runners and provides an automated validation process whenever code changes are submitted.
+
+**Build status:** See the Playwright Tests badge at the top of this README.s
